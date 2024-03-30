@@ -1,0 +1,66 @@
+Recipe Application
+Version 2
+###########################
+SQLITE Table
+--- Food Category
+Id   | Integer
+Name | String
+
+--- Recipe
+Id            | Integer
+Name          | String
+Hidden        | Bool
+Description   | String
+Food Category | Integer Key
+Instructions  | Text
+
+--- Ingredient
+Id                | Integer
+Recipe ID         | Integer
+Ingredient Name   | String
+Ingredient Amount | String
+##########################
+
+Load recipe
+Create recipe / Edit recipe via recipe ID
+Delete recipe
+
+Screens/ frames
+Index Screen - A screen to get to other screens - can delete recipe from here
+	Create recipe screen / Edit recipe Screen
+	Load recipe screen
+Archive Screen
+###
+What each screen needs
+---
+Index Screen
+* A list of avaiable recipes
+* A text search
+* A filter menu box
+* A button to get the filtered list
+* A button to edit, hide, or delete a recipe
+* A button to create a new recipe
+
+Create / Edit Recipe
+** A selection and create a food category
+* A text input for a name
+* A radio button for making it hidden
+* A text input for Description
+** A way to input ingredients into a list
+* A text input for instructions
+
+Load Recipe
+A label for food category
+A label for name
+A label for discription
+A list of ingredients
+A label for instructions
+
+Archive Screen - This could br a filter option in the Index Screen
+* A list of avaiable recipes
+* A text search
+* A filter menu box
+* A button to get the filtered list
+* A button to edit, hide, or delete a recipe
+
+
