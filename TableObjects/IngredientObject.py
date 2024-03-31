@@ -5,31 +5,34 @@ Ingredient Object
 The ingredient object is an object that contains the data fro a recipe that can be loaded or saved to
 a SQLite database.
 """
-from RecipeObject import Recipe
 
 class Ingredient:
-    def __init__(self, id:int = -1, recipe:Recipe = None, name:str = "null", amount:str = "lb"):
+    def __init__(self, id:int = -1, recipe_id:int = -1, name:str = "null", amount:str = "lb"):
         self.id = id
-        self.recipe = recipe
+        self.recipe_id = recipe_id
         self.name = name
         self.amount = amount
     
+    """
+    Returns the SQLite command to create the object table.
+    """
     @staticmethod
     def get_table_string() -> str:
         create_table_string : str = """
-        CREATE TABLE ingredients [If NOT EXISTS](
+        CREATE TABLE IF NOT EXISTS ingredients (
         ingredient_id INTEGER PRIMARY KEY,
         recipe_id INTEGER NOT NULL 
             REFERENCES recipes (recipe_id),
         name TEXT NOT NULL,
-        ingredient_amount TEXT,
+        ingredient_amount TEXT
         );"""
         return create_table_string
 
+    """
+    Converts the table into a SQLite row command
+    """
     def to_sqlite(self) -> str:
-        if self.recipe == None:
-            return "The recipe is null"
-        if self.recipe.id < 0:
+        if self.recipe_id < 0:
             return "The recipe hasn't been saved to SQLite."
         if id < 0:  # If this object hasn't been added to the database
             return f"""
@@ -37,7 +40,7 @@ class Ingredient:
             VALUES ({self.recipe}, "{self.name}", "{self.amount}");"""
         else:  ## If this object is in the database
             return f"""
-            UPDATE ingredients SET recipe_id = {self.recipe.id}, name = "{self.name}", ingredient_amount = "{self.amount}"
+            UPDATE ingredients SET recipe_id = {self.recipe_id}, name = "{self.name}", ingredient_amount = "{self.amount}"
             WHERE ingredient_id = {self.id};
             """
 

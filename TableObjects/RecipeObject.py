@@ -6,8 +6,8 @@ The Recipe Object is a object that contains the data for a recipe that can be lo
 or saved to a SQLITE database. 
 """
 
-from IngredientObject import Ingredient
-from FoodCategoryObject import Food_Category
+from .IngredientObject import Ingredient
+from .FoodCategoryObject import Food_Category
 
 class Recipe:
     def __init__(self, id:int = -1, name:str = "null", description:str  = "No description", food_category:Food_Category = None, ingredients:list[Ingredient] = [], instructions:str = "") -> None:
@@ -19,22 +19,25 @@ class Recipe:
         self.instructions : str = instructions
 
     """
-    Returns the SQLite command to create a recipe table.
+    Returns the SQLite command to create the object table.
     """
     @staticmethod
     def get_table_string() -> str:
         create_table_string : str = """
-        CREATE TABLE recipes [If NOT EXISTS](
-        recipe_id INTEGER PRIMARY KEY
+        CREATE TABLE IF NOT EXISTS recipes (
+        recipe_id INTEGER PRIMARY KEY,
         category_id INTEGER NOT NULL 
             REFERENCES food_categories (category_id),
         name TEXT NOT NULL,
         hidden Integer NOT NULL,
         description TEXT NOT NULL,
-        instructions TEXT;
-        )"""
+        instructions TEXT
+        );"""
         return create_table_string
     
+    """
+    Converts the table into a SQLite row command
+    """
     def to_sqlite(self):
         if self.food_category == None:
             return "Food category is null."

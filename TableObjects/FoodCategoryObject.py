@@ -9,14 +9,20 @@ class Food_Category:
         self.id = id
         self.name = name
     
+    """
+    Returns the SQLite command to create the object table.
+    """
     @staticmethod
     def get_table_string() -> str:
         create_table_string: str = """
-        CREATE TABLE food_category [If NOT EXISTS](
+        CREATE TABLE IF NOT EXISTS food_category (
         food_category_id INTEGER PRIMARY KEY,
         name TEXT NOT NULL);"""
         return create_table_string
     
+    """
+    Converts the table into a SQLite row command
+    """
     def to_sqlite(self):
         if id < 0:
             return f"""
