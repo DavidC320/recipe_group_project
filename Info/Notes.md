@@ -1,5 +1,14 @@
 # Notes
 
+## Notes on the Tkinter Test
+
+The test had a few hiccups but works perfect
+
+1. The frame holder needs all of the child frames in it in a grid pack that overlaps each other.
+2. Lots of spelling errors when changing the frame due to incorrect frame names.
+
+Other those issues it was a quick implementation.
+
 ## Notes of the Connection Test
 
 1. Getting the table commands was incredibly annoy. Due to the files being in a different directory,  

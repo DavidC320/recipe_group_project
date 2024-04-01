@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0
+
+* Created Frame Controller Object
+* Created Frame child object
+* Created a test file for the frame controller and child.
+
 ## 0.1.0
 
 * Moved all of the table objects into the TableObjects directory
