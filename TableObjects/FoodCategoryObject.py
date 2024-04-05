@@ -24,10 +24,10 @@ class Food_Category:
     Converts the table into a SQLite row command
     """
     def to_sqlite(self):
-        if id < 0:
+        if self.id < 0:
             return f"""
-            INSERT INTO food_category (food_category_id, name)
-            VALUES ({self.id}, "{self.name}");"""
+            INSERT INTO food_category (name)
+            VALUES ("{self.name}");"""
         else:
             return f"""
             UPDATE food_category SET food_category_id = {self.id}, name = "{self.name}"

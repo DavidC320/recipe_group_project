@@ -1,4 +1,4 @@
-# recipe_group_project Version 0.1.0
+# recipe_group_project Version 1.1.0
 
 Recipe database for SDEV 265 group project
 

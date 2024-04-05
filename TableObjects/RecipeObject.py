@@ -6,16 +6,13 @@ The Recipe Object is a object that contains the data for a recipe that can be lo
 or saved to a SQLITE database. 
 """
 
-from .IngredientObject import Ingredient
-from .FoodCategoryObject import Food_Category
-
 class Recipe:
-    def __init__(self, id:int = -1, name:str = "null", description:str  = "No description", food_category:Food_Category = None, ingredients:list[Ingredient] = [], instructions:str = "") -> None:
-        self.id : id  # -1 means that the id hasn't been assigned yet
+    def __init__(self, id:int = -1, name:str = "null", hidden = False, description:str  = "No description", food_category:int = -1, instructions:str = ""):
+        self.id : int = id  # -1 means that the id hasn't been assigned yet
         self.name : str = name
+        self.hidden : bool = hidden
         self.description : str = description
-        self.food_category : str = food_category
-        self.ingredients : list[Ingredient] = ingredients
+        self.food_category : int = food_category
         self.instructions : str = instructions
 
     """
@@ -39,18 +36,17 @@ class Recipe:
     Converts the table into a SQLite row command
     """
     def to_sqlite(self):
-        if self.food_category == None:
-            return "Food category is null."
-        if self.food_category.id < 0:
+        if self.food_category < 0:
             return "The Food Category has not been saved to the table."
-        if id < 0:
+        
+        elif self.id < 0:
             return f"""
-            INSERT INTO food_category (food_category_id, name)
-            VALUES ({self.id}, "{self.name}");"""
+            INSERT INTO recipes (category_id, name, hidden, description, instructions)
+            VALUES ({self.food_category}, "{self.name}", {int(self.hidden == True)}, "{self.description}", "{self.instructions}");"""
         else:
             return f"""
-            UPDATE food_category SET food_category_id = {self.id}, name = "{self.name}"
-            WHERE food_category_id = {self.id};
+            UPDATE recipes SET recipe_id = {self.id}, category_id = {self.food_category}, name = "{self.name}", hidden = {int(self.hidden == True)}, description = "{self.description}", instructions = "{self.instructions}"
+            WHERE recipe_id = {self.id};
             """
     
 

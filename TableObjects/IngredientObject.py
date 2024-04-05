@@ -34,10 +34,10 @@ class Ingredient:
     def to_sqlite(self) -> str:
         if self.recipe_id < 0:
             return "The recipe hasn't been saved to SQLite."
-        if id < 0:  # If this object hasn't been added to the database
+        if self.id < 0:  # If this object hasn't been added to the database
             return f"""
             INSERT INTO ingredients (recipe_id, name, ingredient_amount) 
-            VALUES ({self.recipe}, "{self.name}", "{self.amount}");"""
+            VALUES ({self.recipe_id}, "{self.name}", "{self.amount}");"""
         else:  ## If this object is in the database
             return f"""
             UPDATE ingredients SET recipe_id = {self.recipe_id}, name = "{self.name}", ingredient_amount = "{self.amount}"
