@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+* Create the User table.
+* User table added to Table Object __init__
+* User test now available in both the table and record test.
+
 ## 1.1.0
 
 * Created a SQlite Record Test to view issues that could come up.

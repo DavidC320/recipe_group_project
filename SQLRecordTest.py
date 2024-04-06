@@ -3,7 +3,7 @@
 This is to test if recording works
 """
 import sqlite3
-from TableObjects import Food_Category, Ingredient, Recipe, create_full_recipe
+from TableObjects import *
 
 conn = sqlite3.connect("RecipeTest.db")  # Connects or creates a database file.
 c = conn.cursor()  # Allows the database to be changed
@@ -20,8 +20,12 @@ ingredients = [
     Ingredient(recipe_id=1), Ingredient(recipe_id=2), Ingredient(recipe_id=3),  # Create Test
     Ingredient(1, 2, "apricots")  # Update test
 ]
+users = [
+    User(username="Admin", password="admin101"), User(admin=False),  #Create Test
+    User(1, "Joamoan", "swauusa", False)
+]
 
-for category_list in (categories, recipes, ingredients):
+for category_list in (categories, recipes, ingredients, users):
     for category in category_list:
         print(category.to_sqlite())
         c.execute(category.to_sqlite())
@@ -39,6 +43,12 @@ c.execute("SELECT * from recipes;")
 print(c.fetchall())
 c.execute("SELECT * from ingredients;")
 print(c.fetchall())
+c.execute("SELECT * from users;")
+print(c.fetchall())
+
+conn.close()  # Closes the connection
+
+
 """
 https://stackoverflow.com/questions/2127138/how-to-retrieve-the-last-autoincremented-id-from-a-sqlite-table
 Found this to get the last id

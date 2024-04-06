@@ -2,6 +2,7 @@ import sqlite3
 from .FoodCategoryObject import Food_Category
 from .IngredientObject import Ingredient
 from .RecipeObject import Recipe
+from.UserObject import User
 
 def create_full_recipe(c, category:Food_Category, recipe:Recipe, ingredients:list[Ingredient]):
     # save food category

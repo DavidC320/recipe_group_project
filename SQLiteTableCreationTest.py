@@ -4,7 +4,7 @@ SQLite test
 This is to test creating tables from the objects
 """
 import sqlite3
-from TableObjects.RecipeObject import Recipe, Food_Category, Ingredient
+from TableObjects import *
 
 conn = sqlite3.connect("RecipeTest.db")  # Connects or creates a database file.
 c = conn.cursor()  # Allows the database to be changed
@@ -13,7 +13,9 @@ c = conn.cursor()  # Allows the database to be changed
 tables = [
     Food_Category.get_table_string(), 
     Recipe.get_table_string(), 
-    Ingredient.get_table_string()]
+    Ingredient.get_table_string(),
+    User.get_table_string()
+    ]
 
 # Runs each of the commands in the tables.
 for table_command in tables:

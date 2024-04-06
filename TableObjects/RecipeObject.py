@@ -45,7 +45,7 @@ class Recipe:
             VALUES ({self.food_category}, "{self.name}", {int(self.hidden == True)}, "{self.description}", "{self.instructions}");"""
         else:
             return f"""
-            UPDATE recipes SET recipe_id = {self.id}, category_id = {self.food_category}, name = "{self.name}", hidden = {int(self.hidden == True)}, description = "{self.description}", instructions = "{self.instructions}"
+            UPDATE recipes SET category_id = {self.food_category}, name = "{self.name}", hidden = {int(self.hidden == True)}, description = "{self.description}", instructions = "{self.instructions}"
             WHERE recipe_id = {self.id};
             """
     
