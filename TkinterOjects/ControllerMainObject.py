@@ -16,29 +16,40 @@ class FrameController(tk.Tk):
         self.frame_holder.pack()
 
 
-    # Adds a frame to the dictionary with the set key value
-    def add_frame_to_dictionary(self, name_of_frame:str, frame:ChildFrame):
+    def add_frame_to_dictionary(self, name_of_frame:str, frame:tk.Frame):
+        '''
+        Adds a frame into the dictionary with a name key
+        '''
         self.dictionary_of_frames[name_of_frame] = frame
 
 
-    # removes a frame from the dictionary with set key
     def remove_frame_from_dictionary(self, name_of_frame:str):
+        '''
+        Removes the frame from the dictionary with a name key
+        '''
         self.dictionary_of_frames.pop(name_of_frame)
     
     # opens the new frame and closes the previous frame
     def open_frame(self, name_of_frame:str):
+        '''
+        Opens the new frame from the name key and closes the previous frame unless the previous frame can't be closed.
+        '''
         new_frame = self.dictionary_of_frames.get(name_of_frame)
-        if not new_frame:
+
+        if not new_frame:  # stops the action if the no frame is found
             print("error " + name_of_frame)
             return
 
-        if self.current_frame:
+        if self.current_frame:  # close the previous frame if available
             if isinstance(self.current_frame, ChildFrame):
-                self.current_frame.on_close()
+                if self.current_frame.can_close():
+                    self.current_frame.on_close()
+                else:
+                    print("Error with frame " + name_of_frame)
         
-        if isinstance(new_frame, ChildFrame):
+        if isinstance(new_frame, ChildFrame):  # activates the child frame's open action.
                 new_frame.on_open()
-        print(name_of_frame)
+        
         new_frame.tkraise()
         self.current_frame = new_frame
 

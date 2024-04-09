@@ -6,12 +6,14 @@ The ingredient object is an object that contains the data fro a recipe that can 
 a SQLite database.
 """
 
-class Ingredient:
+from .BaseTableObject import BaseTable
+
+class Ingredient(BaseTable):
     def __init__(self, id:int = -1, recipe_id:int = -1, name:str = "null", amount:str = "lb"):
-        self.id = id
-        self.recipe_id = recipe_id
-        self.name = name
-        self.amount = amount
+        super().__init__(id)
+        self.recipe_id : int = recipe_id
+        self.name : str = name
+        self.amount : str = amount
     
     """
     Returns the SQLite command to create the object table.
@@ -28,21 +30,18 @@ class Ingredient:
         );"""
         return create_table_string
 
-    """
-    Converts the table into a SQLite row command
-    """
-    def to_sqlite(self) -> str:
-        if self.recipe_id < 0:
-            return "The recipe hasn't been saved to SQLite."
-        if self.id < 0:  # If this object hasn't been added to the database
-            return f"""
+    def sqlite_insert(self) -> str:
+        return f"""
             INSERT INTO ingredients (recipe_id, name, ingredient_amount) 
             VALUES ({self.recipe_id}, "{self.name}", "{self.amount}");"""
-        else:  ## If this object is in the database
-            return f"""
+
+    def sqlite_update(self) -> str:
+        return f"""
             UPDATE ingredients SET recipe_id = {self.recipe_id}, name = "{self.name}", ingredient_amount = "{self.amount}"
             WHERE ingredient_id = {self.id};
             """
+    def to_array(self):
+        return [self.recipe_id, self.name, self.amount]
 
 """
 References:

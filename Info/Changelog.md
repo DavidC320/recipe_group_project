@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.0
+
+* Created the Base Table object
+  * Created insert & update functions
+  * Created to array function
+  * All Table objects inherit from the Base Table
+  * All Tables now use the insert & update functions instead of to_sqlite
+* User admin & Recipe hidden now use integers instead of booleans to keep parity between python and SQLite statements
+* Created __init__ file in the Tkinter Objects directory
+* Added Doc strings to the Controller Main Object
+  * The open_frame function now checks if the current frame can be closed
+* Added Doc strings into the child frame Object
+  * on open has been split into can_open & on_close functions
+* Updated the record test to save records so we can have test records for the load test
+* Created the load test
+
 ## 1.1.1
 
 * Create the User table.

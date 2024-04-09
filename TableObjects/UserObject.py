@@ -2,13 +2,14 @@
 3/30/2024
 User category Object
 """
+from .BaseTableObject import BaseTable
 
-class User:
-    def __init__(self, id:int = -1, username:str = "", password:str = "", admin:bool = True):
-        self.id = id
-        self.username = username
-        self.password = password
-        self.admin = admin
+class User(BaseTable):
+    def __init__(self, id:int = -1, username:str = "", password:str = "", admin:int = 1):
+        super().__init__(id)
+        self.username: str = username
+        self.password: str = password
+        self.admin: int = admin
     
     @staticmethod
     def get_table_string() -> str:
@@ -20,15 +21,18 @@ class User:
         admin INTEGER NOT NULL
         );"""
     
-    def to_sqlite(self):
-        if self.id <0:
-            return f"""
+    def sqlite_insert(self) -> str:
+         return f"""
             INSERT INTO users (username, password, admin)
             VALUES ("{self.username}", "{self.password}", {self.admin});"""
-        else:
-            return f""" UPDATE users SET username = "{self.username}", password = "{self.password}", admin = {int(self.admin == True)} 
+
+    def sqlite_update(self) -> str:
+        return f""" UPDATE users SET username = "{self.username}", password = "{self.password}", admin = {self.admin} 
             WHERE user_id = {self.id}
             """
+
+    def to_array(self):
+        return [self.id, self.username, self.password, self.admin]
 """
 Warning:
 

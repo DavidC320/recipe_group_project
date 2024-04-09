@@ -9,17 +9,21 @@ class ChildFrame(tk.Frame):
         super().__init__(master, **kwargs)
         self.controller = controller
 
-    """Updates the frame when opened. Controlled my the frame manager."""    
     def on_open(self):
-        pass
+        '''
+        Does an action when the frame is opened by the frame manager.
+        '''
 
-    """
-    What Happens when the frame is closed. Must return a boolean for the frame manager.
-    true - Can close
-    false - Can close due to something I.E. The user forgot to enter a value in the recipe.
-    """
-    def on_close(self) -> bool:
+    def can_close(self) -> bool:
+        '''
+        Checks if the child frame can be opened
+        '''
         return True
+
+    def on_close(self):
+        '''
+        Does an action when the frame is closed by the frame manager.
+        '''
 
     
 

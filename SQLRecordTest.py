@@ -37,15 +37,11 @@ create_full_recipe(c,
                    Recipe(name="bug", description="In a rug", instructions="Eating grub"), 
                    [Ingredient(name="Dirt", amount=" 2 Tons")])
 
-c.execute("SELECT * from food_category;")
-print(c.fetchall())
-c.execute("SELECT * from recipes;")
-print(c.fetchall())
-c.execute("SELECT * from ingredients;")
-print(c.fetchall())
-c.execute("SELECT * from users;")
-print(c.fetchall())
+for statement in ["SELECT * from food_category;", "SELECT * from recipes;", "SELECT * from ingredients;", "SELECT * from users;"]:
+    c.execute(statement)
+    print(c.fetchall())
 
+conn.commit()
 conn.close()  # Closes the connection
 
 

@@ -5,19 +5,17 @@ Recipe Object
 The Recipe Object is a object that contains the data for a recipe that can be loaded 
 or saved to a SQLITE database. 
 """
+from .BaseTableObject import BaseTable
 
-class Recipe:
-    def __init__(self, id:int = -1, name:str = "null", hidden = False, description:str  = "No description", food_category:int = -1, instructions:str = ""):
-        self.id : int = id  # -1 means that the id hasn't been assigned yet
+class Recipe(BaseTable):
+    def __init__(self, id:int = -1, name:str = "null", hidden:int = 0, description:str  = "No description", food_category:int = -1, instructions:str = ""):
+        super().__init__(id)
         self.name : str = name
-        self.hidden : bool = hidden
+        self.hidden : int = hidden
         self.description : str = description
         self.food_category : int = food_category
         self.instructions : str = instructions
 
-    """
-    Returns the SQLite command to create the object table.
-    """
     @staticmethod
     def get_table_string() -> str:
         create_table_string : str = """
@@ -31,24 +29,21 @@ class Recipe:
         instructions TEXT
         );"""
         return create_table_string
-    
-    """
-    Converts the table into a SQLite row command
-    """
-    def to_sqlite(self):
-        if self.food_category < 0:
-            return "The Food Category has not been saved to the table."
-        
-        elif self.id < 0:
-            return f"""
+
+    def sqlite_insert(self) -> str:
+        return f"""
             INSERT INTO recipes (category_id, name, hidden, description, instructions)
-            VALUES ({self.food_category}, "{self.name}", {int(self.hidden == True)}, "{self.description}", "{self.instructions}");"""
-        else:
-            return f"""
-            UPDATE recipes SET category_id = {self.food_category}, name = "{self.name}", hidden = {int(self.hidden == True)}, description = "{self.description}", instructions = "{self.instructions}"
+            VALUES ({self.food_category}, "{self.name}", {self.hidden}, "{self.description}", "{self.instructions}");"""
+
+    def sqlite_update(self) -> str:
+        return f"""
+            UPDATE recipes SET category_id = {self.food_category}, name = "{self.name}", hidden = {self.hidden}, description = "{self.description}", instructions = "{self.instructions}"
             WHERE recipe_id = {self.id};
             """
     
+    def to_array(self) -> list:
+        return [self.name, self.hidden, self.description, self.food_category, self.instructions]
+
 
 """
 References:
