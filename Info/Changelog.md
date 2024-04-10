@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+* changed the default value for name in the food category object from "Null" to "null"
+
 ## 2.0.0
 
 * Created the Base Table object
