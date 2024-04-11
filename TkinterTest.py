@@ -17,15 +17,15 @@ root.mainloop()"""
 root = FrameController()
 
 start_screen = ChildFrame(root.frame_holder, root)
-start_screen.grid(column=0, row=0, sticky="nsew")
 tk.Label(start_screen, text="Start Screen").pack()
 tk.Button(start_screen, text="Go to page 1", command=lambda:root.open_frame("next screen")).pack()
+start_screen.grid(column=0, row=0, sticky="nsew")
 root.add_frame_to_dictionary("start screen", start_screen)
 
 next_page = ChildFrame(root.frame_holder, root)
-next_page.grid(column=0, row=0, sticky="nsew")
 tk.Label(next_page, text="Page 1").pack()
 tk.Button(next_page, text="Back to start", command=lambda:root.open_frame("start screen")).pack()
+next_page.grid(column=0, row=0, sticky="nsew")
 root.add_frame_to_dictionary("next screen", next_page)
 print(root.dictionary_of_frames)
 

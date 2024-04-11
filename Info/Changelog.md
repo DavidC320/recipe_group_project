@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+* Created a test to demonstrate the on open function of the child frame class
+
 ## 2.0.1
 
 * changed the default value for name in the food category object from "Null" to "null"
