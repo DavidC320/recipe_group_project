@@ -9,8 +9,8 @@ conn = sqlite3.connect("RecipeTest.db")  # Connects or creates a database file.
 c = conn.cursor()  # Allows the database to be changed
 
 categories = [
-    Food_Category(-1, "Snack"), Food_Category(-1, "Dessert"), Food_Category(-1, "Brunch"),  # Create test
-    Food_Category(1, "Breakfast"), Food_Category(2, "Lunch"), Food_Category(3, "Dinner")  # Update test
+    FoodCategory(-1, "Snack"), FoodCategory(-1, "Dessert"), FoodCategory(-1, "Brunch"),  # Create test
+    FoodCategory(1, "Breakfast"), FoodCategory(2, "Lunch"), FoodCategory(3, "Dinner")  # Update test
     ]
 recipes = [
     Recipe(food_category= 1), Recipe(food_category= 2), Recipe(food_category= 3),  # Create test
@@ -33,11 +33,11 @@ for category_list in (categories, recipes, ingredients, users):
         category.id = c.fetchone()[0]
 
 create_full_recipe(c, 
-                   Food_Category(name="Snug"), 
+                   FoodCategory(name="Snug"), 
                    Recipe(name="bug", description="In a rug", instructions="Eating grub"), 
                    [Ingredient(name="Dirt", amount=" 2 Tons")])
 
-for statement in ["SELECT * from food_category;", "SELECT * from recipes;", "SELECT * from ingredients;", "SELECT * from users;"]:
+for statement in ["SELECT * from food_categories;", "SELECT * from recipes;", "SELECT * from ingredients;", "SELECT * from users;"]:
     c.execute(statement)
     print(c.fetchall())
 

@@ -1,10 +1,10 @@
 import sqlite3
-from .FoodCategoryObject import Food_Category
+from .FoodCategoryObject import FoodCategory
 from .IngredientObject import Ingredient
 from .RecipeObject import Recipe
 from.UserObject import User
 
-def create_full_recipe(c, category:Food_Category, recipe:Recipe, ingredients:list[Ingredient]):
+def create_full_recipe(c, category:FoodCategory, recipe:Recipe, ingredients:list[Ingredient]):
     # save food category
     c.execute(category.to_sqlite())
     c.execute("SELECT last_insert_rowid(); ")

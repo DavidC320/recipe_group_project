@@ -12,7 +12,7 @@ c = conn.cursor()  # Allows the database to be changed
 
 objects : dict = {
     "food categories" : {
-        "select statement" :  "SELECT * from food_category;",
+        "select statement" :  "SELECT * from food_categories;",
         "records" : [],
         "objects" : []
     },
@@ -48,44 +48,28 @@ pprint.pprint(objects)
 # create Food Category Objects 
 created_object_list = []
 for record in objects.get("food categories").get("records"):
-    record_id = record[0]
-    record_name = record[1]
-    created_object_list.append(Food_Category(record_id, record_name))
+    created_object_list.append(FoodCategory().assign_by_array(record))
 objects.get("food categories")["objects"] = created_object_list
 
 
 # create Recipe Objects
 created_object_list = []
 for record in objects.get("recipes").get("records"):
-    record_id = record[0]
-    record_category_id = record[1]
-    record_name = record[2]
-    record_hidden = record[3]
-    record_description = record[4]
-    record_instructions = record[5]
-    created_object_list.append(Recipe(record_id, record_name, record_hidden, record_description, record_category_id, record_instructions))
+    created_object_list.append(Recipe().assign_by_array(record))
 objects.get("recipes")["objects"] = created_object_list
 
 
 # create Ingredient objects
 created_object_list = []
 for record in objects.get("ingredients").get("records"):
-    record_id = record[0]
-    record_category_id = record[1]
-    record_name = record[2]
-    record_amount = record[3]
-    created_object_list.append(Ingredient(record_id, record_category_id, record_name, record_amount))
+    created_object_list.append(Ingredient().assign_by_array(record))
 objects.get("ingredients")["objects"] = created_object_list
 
 
 # Create User objects
 created_object_list = []
 for record in objects.get("users").get("records"):
-    record_id = record[0]
-    record_name = record[1]
-    record_password = record[2]
-    record_type = record[3]
-    created_object_list.append(User(record_id, record_name, record_password, record_type))
+    created_object_list.append(User().assign_by_array(record))
 objects.get("users")["objects"] = created_object_list
 
 print("\ncompleted record to object\n")

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.1
+
+* The SQLite load test food category select statement has been changed to food_categories to match the new table name
+* All files that had the Food_Category object name has been changed to FoodCategory to match the new object name
+* assign_by_array has been added to the Base Table Object to make loading recipes from SQLite databases easier
+  * All Children of the base class now uses assign_by_array
+
 ## 2.1.0
 
 * Created a test to demonstrate the on open function of the child frame class

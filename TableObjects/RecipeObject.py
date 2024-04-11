@@ -43,6 +43,15 @@ class Recipe(BaseTable):
     
     def to_array(self) -> list:
         return [self.name, self.hidden, self.description, self.food_category, self.instructions]
+    
+    def assign_by_array(self, list):
+        self.id = list[0]
+        self.food_category = list[1]
+        self.name = list[2]
+        self.hidden = list[3]
+        self.description = list[4]
+        self.instructions = list[5]
+        return self
 
 
 """

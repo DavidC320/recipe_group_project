@@ -18,6 +18,12 @@ class BaseTable:
         Returns the SQLite statement to create the table
         '''
     
+    def assign_by_array(self, list):
+        """
+        Assigns the the variables in a list into the object
+        and returns self
+        """
+    
     def to_array(self) -> list:
         '''
         Returns the array of variables used in this current record.

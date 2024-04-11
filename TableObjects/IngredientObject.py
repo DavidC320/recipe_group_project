@@ -42,6 +42,13 @@ class Ingredient(BaseTable):
             """
     def to_array(self):
         return [self.recipe_id, self.name, self.amount]
+    
+    def assign_by_array(self, list):
+        self.id = list[0]
+        self.recipe_id = list[1]
+        self.name = list[2]
+        self.amount = list[3]
+        return self
 
 """
 References:

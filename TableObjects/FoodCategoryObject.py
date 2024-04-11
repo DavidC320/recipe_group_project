@@ -33,3 +33,8 @@ class FoodCategory(BaseTable):
             UPDATE food_categories SET food_category_id = {self.id}, name = "{self.name}"
             WHERE food_category_id = {self.id};
             """
+    
+    def assign_by_array(self, list):
+        self.id = list[0]
+        self.name = list[1]
+        return self

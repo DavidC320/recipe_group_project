@@ -33,6 +33,13 @@ class User(BaseTable):
 
     def to_array(self):
         return [self.id, self.username, self.password, self.admin]
+    
+    def assign_by_array(self, list):
+        self.id = list[0]
+        self.username = list[1]
+        self.password = list[2]
+        self.admin = list[3]
+        return self
 """
 Warning:
 

@@ -11,7 +11,7 @@ c = conn.cursor()  # Allows the database to be changed
 
 # Gets the commands to create the tables for the Database
 tables = [
-    Food_Category.get_table_string(), 
+    FoodCategory.get_table_string(), 
     Recipe.get_table_string(), 
     Ingredient.get_table_string(),
     User.get_table_string()
