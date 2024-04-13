@@ -1,5 +1,26 @@
 # Notes
 
+## Deconstruction 3
+
+Major goals
+
+* Create the UI
+  * Main menu
+  * Database initalizing
+    * Create database screen
+    * Load database screen
+  * user screens
+    * Create admin
+    * login
+    * create/edit user
+    * user index
+  * recipe Book
+    * recipe index
+    * view recipe
+    * create/update recipe
+* Create encrption and decreption for both user passwords and file
+* Create a connection object for sqlite for easier asccess for other objects
+
 ## Notes on the Tkinter Test
 
 The test had a few hiccups but works perfect

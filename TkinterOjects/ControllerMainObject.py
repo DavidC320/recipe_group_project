@@ -12,6 +12,8 @@ class FrameController(tk.Tk):
         super().__init__(**kwargs)
         self.dictionary_of_frames = {}
         self.current_frame = None
+        self.basic_frame = tk.Frame(self)
+        self.basic_frame.pack()
         self.frame_holder = tk.Frame(self)
         self.frame_holder.pack()
 
@@ -21,6 +23,11 @@ class FrameController(tk.Tk):
         Adds a frame into the dictionary with a name key
         '''
         self.dictionary_of_frames[name_of_frame] = frame
+
+
+    def add_frame_direct(self, name_of_frame:str, frame:tk.Frame):
+        frame.grid(column=0, row=0, sticky="nsew")
+        self.add_frame_to_dictionary(name_of_frame, frame)
 
 
     def remove_frame_from_dictionary(self, name_of_frame:str):

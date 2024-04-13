@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.0.0
+
+* Created Recipe App
+  * ui of screens added
+    * start screen
+    * create database
+    * load database
+    * recipe index
+    * view recipe
+    * create user
+    * login
+    * user index
+* The controller frame can now add frames directly
+
 ## 2.2.1
 
 * The SQLite load test food category select statement has been changed to food_categories to match the new table name
