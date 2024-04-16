@@ -1,5 +1,21 @@
 # Notes
 
+## What to do
+
+* Create files for database and password keys
+* encrypt and decrypt database files
+* create login information
+* get the sqlite stuff done
+* transfer data across frames.
+* That's about it
+
+## Screens
+
+* Main menu
+* Login
+
+* update the create database to give keys
+
 ## Deconstruction 3
 
 Major goals

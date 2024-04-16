@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.1
+
+* Added main menu
+  * recipe index, user index now go to the main menu
+  * create user and create recipe now go to their respective indexes
+
 ## 3.1.0
 
 * The create database screen & load database screen can now load and create databases

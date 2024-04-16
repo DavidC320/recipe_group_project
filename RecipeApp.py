@@ -18,7 +18,7 @@ from cryptography.fernet import Fernet
 class StartScreen(ChildFrame):
     def __init__(self, master, controller, **kwargs) -> None:
         super().__init__(master, controller, **kwargs)
-        tk.Label(self, text="Main menu").pack()
+        tk.Label(self, text="Welcome").pack()
         self.create_database = tk.Button(self, text="Create Database", command=lambda: controller.open_frame("create database"))
         self.create_database.pack()
 
@@ -51,7 +51,7 @@ class CreateDatabaseScreen(ChildFrame):
     def create_database(self):
         if self.file_path not in ["", "//filepath/?"]:
             self.controller.connect_to_file(self.file_path)
-            self.controller.open_frame("recipe index")
+            self.controller.open_frame("main menu")
         else:
             self.filepath_label.config(text= "Select a file path")
 
@@ -94,7 +94,7 @@ class LoadDatabaseScreen(ChildFrame):
     def load_database(self):
         if self.file_path not in ["", "//filepath/?"]:
             self.controller.connect_to_file(self.file_path)
-            self.controller.open_frame("recipe index")
+            self.controller.open_frame("main menu")
         else:
             self.filepath_label.config(text= "Select a file path")
 
@@ -136,7 +136,7 @@ class RecipeIndex(ChildFrame):
         self.view_button = tk.Button(self.control_frame, text="View", command=self.view_recipe)
         self.view_button.grid(row=0, column=1)
 
-        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("start"))
+        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("main menu"))
         self.back_button.grid(row=0, column=2)
     
     def on_close(self):
@@ -240,7 +240,7 @@ class ViewRecipe(ChildFrame):
             self.update_button = tk.Button(self.control_frame, text="Create", command=lambda: controller.open_frame("recipe index"))
         self.update_button.grid(row= 0, column=0)
 
-        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("start"))
+        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("recipe index"))
         self.back_button.grid(row= 0, column=1)
         #
         # Footer
@@ -285,7 +285,7 @@ class CreateUser(ChildFrame):
         self.create_button = tk.Button(self.control_frame, text=button_text)
         self.create_button.grid(row=0, column=0)
 
-        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("start"))
+        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("user index"))
         self.back_button.grid(row=0, column=1)
 
 
@@ -329,8 +329,8 @@ class UserIndex(ChildFrame):
         self.search_button = tk.Button(self.control_frame, text="Search")
         self.search_button.grid(row=0, column=1)
 
-        self.recipe_list_box = tk.Listbox(self, height=10)
-        self.recipe_list_box.grid(row=2, column=0)
+        self.recipe_list_box = tk.Listbox(self.control_frame, height=10)
+        self.recipe_list_box.grid(row=1, column=0)
 
         self.control_frame = tk.Frame(self)
         self.control_frame.grid(row=3, column=0)
@@ -344,8 +344,26 @@ class UserIndex(ChildFrame):
         self.view_button = tk.Button(self.control_frame, text="View")
         self.view_button.grid(row=0, column=2)
 
-        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("start"))
+        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("main menu"))
         self.back_button.grid(row=0, column=3)
+
+
+class MainMenu(ChildFrame):
+    def __init__(self, master, controller, **kwargs) -> None:
+        super().__init__(master, controller, **kwargs)
+        tk.Label(self, text="Main Menu").pack()
+
+        self.recipe_index_button = tk.Button(self, text="Go to recipes", command=lambda: controller.open_frame("recipe index"))
+        self.recipe_index_button.pack()
+
+        self.user_index_button = tk.Button(self, text="Go to users", command=lambda: controller.open_frame("user index"))
+        self.user_index_button.pack()
+
+        self.sign_out_button = tk.Button(self, text="Sign out")
+        self.sign_out_button.pack()
+
+        self.back_button = tk.Button(self, text="Back", command=lambda: controller.open_frame("start"))
+        self.back_button.pack()
 
 
 class SqliteConnecter():
@@ -403,9 +421,10 @@ root.add_frame_direct("create user", CreateUser(root.frame_holder, root, False, 
 root.add_frame_direct("Update user", CreateUser(root.frame_holder, root, False, False))
 root.add_frame_direct("login", Login(root.frame_holder, root))
 root.add_frame_direct("user index", UserIndex(root.frame_holder, root))
+root.add_frame_direct("main menu", MainMenu(root.frame_holder, root))
 
 
-root.open_frame("start")
+root.open_frame("login")
 root.mainloop()
 
 """
