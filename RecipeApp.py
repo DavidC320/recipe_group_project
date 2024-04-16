@@ -30,6 +30,7 @@ class CreateDatabaseScreen(ChildFrame):
     def __init__(self, master, controller, **kwargs) -> None:
         super().__init__(master, controller, **kwargs)
         tk.Label(self, text="Create Database").pack()
+        self.file_path = ""
 
         self.create_database_button = tk.Button(self, text="Select file destination", command=self.select_destination)
         self.create_database_button.pack()
@@ -37,21 +38,38 @@ class CreateDatabaseScreen(ChildFrame):
         self.filepath_label = tk.Label(self, text="//filepath/?")
         self.filepath_label.pack()
 
-        self.create_button = tk.Button(self, text="Create")
+        self.create_button = tk.Button(self, text="Create", command=self.create_database)
         self.create_button.pack()
 
         self.back_button = tk.Button(self, text="Back", command=lambda: controller.open_frame("start"))
         self.back_button.pack()
     
+    def on_close(self):
+        self.file_path = ""
+        self.filepath_label.config(text= "//filepath/?")
+    
+    def create_database(self):
+        if self.file_path not in ["", "//filepath/?"]:
+            self.controller.connect_to_file(self.file_path)
+            self.controller.open_frame("recipe index")
+        else:
+            self.filepath_label.config(text= "Select a file path")
+
     def select_destination(self):
-        data = fd.asksaveasfilename()
-        self.filepath_label.config(text= data)
+        data = fd.asksaveasfilename(title="Select where you want to save the file.", 
+                                    defaultextension="*.db",
+                                    filetypes= [("Database File", "*.db")]
+                                    )
+        if data != "":
+            self.file_path = data
+            self.filepath_label.config(text= data)
 
 
 class LoadDatabaseScreen(ChildFrame):
     def __init__(self, master, controller, **kwargs) -> None:
         super().__init__(master, controller, **kwargs)
         tk.Label(self, text="load Database").pack()
+        self.file_path = ""
 
         self.load_database_button = tk.Button(self, text="Select file destination", command=self.select_destination)
         self.load_database_button.pack()
@@ -59,7 +77,7 @@ class LoadDatabaseScreen(ChildFrame):
         self.filepath_label = tk.Label(self, text="//filepath/?")
         self.filepath_label.pack()
 
-        self.load_button = tk.Button(self, text="Load")
+        self.load_button = tk.Button(self, text="Load", command=self.load_database)
         self.load_button.pack()
         
         self.back_button = tk.Button(self, text="Back", command=lambda: controller.open_frame("start"))
@@ -68,6 +86,26 @@ class LoadDatabaseScreen(ChildFrame):
     def select_destination(self):
         data = fd.askopenfile()
         self.filepath_label.config(text= data)
+    
+    def on_close(self):
+        self.file_path = ""
+        self.filepath_label.config(text= "//filepath/?")
+    
+    def load_database(self):
+        if self.file_path not in ["", "//filepath/?"]:
+            self.controller.connect_to_file(self.file_path)
+            self.controller.open_frame("recipe index")
+        else:
+            self.filepath_label.config(text= "Select a file path")
+
+    def select_destination(self):
+        data = fd.askopenfilename(title="Select the file you want to load.", 
+                                    defaultextension="*.db",
+                                    filetypes= [("Database File", "*.db")]
+                                    )
+        if data != "":
+            self.file_path = data
+            self.filepath_label.config(text= data)
 
 
 class RecipeIndex(ChildFrame):
@@ -83,7 +121,7 @@ class RecipeIndex(ChildFrame):
         self.show_hidden_check_button = tk.Checkbutton(self, text="Show Hidden", variable=self.show_hidden)
         self.show_hidden_check_button.grid(row=1, column=2)
 
-        self.search_button = tk.Button(self, text="Search")
+        self.search_button = tk.Button(self, text="Search", command=self.search)
         self.search_button.grid(row=1, column=1)
 
         self.recipe_list_box = tk.Listbox(self, height=10)
@@ -95,11 +133,38 @@ class RecipeIndex(ChildFrame):
         self.create_button = tk.Button(self.control_frame, text="Create")
         self.create_button.grid(row=0, column=0)
 
-        self.view_button = tk.Button(self.control_frame, text="View")
+        self.view_button = tk.Button(self.control_frame, text="View", command=self.view_recipe)
         self.view_button.grid(row=0, column=1)
 
         self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("start"))
         self.back_button.grid(row=0, column=2)
+    
+    def on_close(self):
+        self.recipe_list_box.delete(0, self.recipe_list_box.size())
+    
+    def on_open(self):
+        connection : SqliteConnecter = self.controller.get_connector()
+        connection.c.execute("""
+                             SELECT * FROM recipes
+                             WHERE hidden = 0;
+                             """)
+        list_of_recipes = connection.c.fetchall()
+        for recipe in list_of_recipes:
+            self.recipe_list_box.insert(recipe[0], recipe[2])
+    
+    def view_recipe(self):
+        print(self.recipe_list_box.curselection()[0])
+    
+    def search(self):
+        if self.search_query.get() != "":
+            connection : SqliteConnecter = self.controller.get_connector()
+            connection.c.execute(f"""
+                                SELECT * FROM recipes
+                                WHERE name LIKE "{self.search_query.get()}%";
+                                """)
+            list_of_recipes = connection.c.fetchall()
+            print(list_of_recipes)
+
 
 
 class ViewRecipe(ChildFrame):
@@ -284,15 +349,48 @@ class UserIndex(ChildFrame):
 
 
 class SqliteConnecter():
-    def __init__(self) -> None:
-        pass
+    def __init__(self, path) -> None:
+        self.conn = sqlite3.connect(path)  # Connects or creates a database file.
+        self.c = self.conn.cursor()  # Allows the database to be changed
 
 
-conn = sqlite3.connect("RecipeTest.db")  # Connects or creates a database file.
-c = conn.cursor()  # Allows the database to be changed
+class RecipeApp(FrameController):
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.sqlite_connector = None
+        self.title("Recipe Book")
+    
+    def connect_to_file(self, path:str):
+        self.close_connection()
+        self.sqlite_connector = SqliteConnecter(path)
 
-root = FrameController(screenName= "Recipe Book")
-root.title("Recipe Book")
+        tables = [
+            FoodCategory.get_table_string(), 
+            Recipe.get_table_string(), 
+            Ingredient.get_table_string(),
+            User.get_table_string()
+            ]
+
+        # Runs each of the commands in the tables.
+        for table_command in tables:
+            self.sqlite_connector.c.execute(table_command)
+        self.sqlite_connector.conn.commit()
+    
+    def close_connection(self):
+        if isinstance(self.sqlite_connector, sqlite3.Connection):
+            self.sqlite_connector.c.close()
+    
+    def get_connector(self):
+        if not self.sqlite_connector:
+            raise ValueError("A connection has not been created")
+        else:
+            return self.sqlite_connector
+    
+
+
+conn = SqliteConnecter("RecipeTest.db")
+
+root = RecipeApp(screenName= "Recipe Book")
 
 root.add_frame_direct("start", StartScreen(root.frame_holder, root))
 root.add_frame_direct("create database", CreateDatabaseScreen(root.frame_holder, root))
@@ -307,7 +405,7 @@ root.add_frame_direct("login", Login(root.frame_holder, root))
 root.add_frame_direct("user index", UserIndex(root.frame_holder, root))
 
 
-root.open_frame("recipe index")
+root.open_frame("start")
 root.mainloop()
 
 """
@@ -327,4 +425,16 @@ How to use basic widgets
 
 https://www.geeksforgeeks.org/combobox-widget-in-tkinter-python/
 How to put values into a list
+
+https://victoria.dev/blog/do-i-raise-or-return-errors-in-python/
+How to raise an error
+
+https://stackoverflow.com/questions/31732177/tkinter-tclerror-bad-file-type-using-askopenfilename
+use lists [] not arrays ()
+
+https://www.tutorialspoint.com/python/tk_listbox.htm
+how to insert into a listbox
+
+https://www.sqlitetutorial.net/sqlite-where/
+How to use where
 """

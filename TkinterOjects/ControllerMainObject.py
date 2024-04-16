@@ -59,6 +59,7 @@ class FrameController(tk.Tk):
         
         new_frame.tkraise()
         self.current_frame = new_frame
+        return new_frame
 
 
 """

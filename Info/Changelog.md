@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.0
+
+* The create database screen & load database screen can now load and create databases
+* The Recipe index can now load recipes from the database
+  * The user can now search by name
+* The controller frame open frame function now returns the frame
+
 ## 3.0.0
 
 * Created Recipe App
