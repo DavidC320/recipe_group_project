@@ -1,5 +1,9 @@
 # Notes
 
+## issue - can't get the recipe index
+
+Due to the insert of the listbox, I will need to create a dictionary or list to convert the indexes into the correct index.
+
 ## What to do
 
 * Create files for database and password keys

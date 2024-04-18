@@ -1,5 +1,22 @@
 # Changelog
 
+## 3.2.0
+
+* Packages can now be imported into files in folders.
+* Created Screens Folder
+  * CreateDatabaseScreen
+  * CreateUserScreen
+  * LoadDatabaseScreen
+  * LoginScreen
+  * MainMenuScreen
+  * RecipeIndexScreen
+  * StartScreen
+  * UserIndexScreen
+  * ViewRecipeScreen
+* Created Test folder
+  * All test files are now located here
+* The view Recipe screen now use table objects
+
 ## 3.1.1
 
 * Added main menu

@@ -3,9 +3,12 @@
 https://youtu.be/YXPyB4XeYLA?si=2Xi7yhMSZ4A5mb4k
 Code based off of this video
 """
-
+import sys
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath("tkinter_objects\\__init__.py"))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
 import tkinter as tk
-from TkinterOjects.ControllerMainObject import *
+from tkinter_objects.ControllerMainObject import *
 """
 root = tk.Tk()
 

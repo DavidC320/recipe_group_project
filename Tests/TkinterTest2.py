@@ -1,14 +1,18 @@
+import sys
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath("tkinter_objects\\__init__.py"))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
 import tkinter as tk
-from TkinterOjects.ControllerMainObject import *
+from tkinter_objects import ControllerMainObject as cm
 
-class IntroPage(ChildFrame):
+class IntroPage(cm.ChildFrame):
     def __init__(self, master, controller, **kwargs) -> None:
         super().__init__(master, controller, **kwargs)
         tk.Label(self, text="Home Page").pack()
         self.next_page_button = tk.Button(self, text="Next page", command=lambda:controller.open_frame("page 1"))
         self.next_page_button.pack()
 
-class CountPage(ChildFrame):
+class CountPage(cm.ChildFrame):
     def __init__(self, master, controller, **kwargs) -> None:
         super().__init__(master, controller, **kwargs)
         self.count = 0
@@ -26,7 +30,7 @@ class CountPage(ChildFrame):
 
 
 
-root = FrameController()
+root = cm.FrameController()
 
 intro_page = IntroPage(root.frame_holder, root)
 intro_page.grid(column=0, row=0, sticky="nsew")
