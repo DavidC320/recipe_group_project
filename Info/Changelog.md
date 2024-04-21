@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.3.0
+
+* The view recipe now works
+  * Can update & create recipes & ingredients
+* Instructions on how to open is now in the README
+
 ## 3.2.0
 
 * Packages can now be imported into files in folders.
