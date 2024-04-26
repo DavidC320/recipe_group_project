@@ -1,11 +1,16 @@
 # Notes
 
+## Missing - Delete in Recipe Index
+
+The Recipe Index is missing the delete button
+
 ## Todo
 
-* fix the food category issue
-* fix capitalization
-* make the show hidden open search
-* fix the search button when the hidden button is pressed
+* fix the food category issue - fixed
+* fix capitalization - fixed
+* make the show hidden open search - fixed
+* fix the search button when the hidden button is pressed - fixed
+* Editing a ingredient adds another ingredient instead of updating. - fixed
 
 ## issue - can't get the recipe index
 

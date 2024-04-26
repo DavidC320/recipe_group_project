@@ -41,6 +41,8 @@ class RecipeIndex(ChildFrame):
     
     def on_close(self):
         self.clean_list()
+        self.show_hidden.set(False)
+        self.search_query.set('')
     
     def on_open(self):
         connection : SqliteConnecter = self.controller.get_connector()
@@ -69,23 +71,18 @@ class RecipeIndex(ChildFrame):
     
     def search(self):
         connection : SqliteConnecter = self.controller.get_connector()
-        if self.show_hidden.get():
-            connection.c.execute(f"""
-                                SELECT * FROM recipes
-                                WHERE hidden = 1;
-                                """)
-            self.add_into_list_of_recipes(connection.c.fetchall())
-            
-        elif self.search_query.get() != "":
-            connection.c.execute(f"""
-                                SELECT * FROM recipes
-                                WHERE name LIKE "{self.search_query.get()}%"
-                                AND hidden = {1 if self.show_hidden.get() else 0};
-                                """)
-            self.add_into_list_of_recipes(connection.c.fetchall())
+        search_statement = f"""
+                            SELECT * FROM recipes
+                            WHERE hidden = {1 if self.show_hidden.get() else 0}
+                            """
         
+        if self.search_query.get() != "":
+            search_statement += f" AND name LIKE '{self.search_query.get()}%';"
         else:
-            self.on_open()
+            search_statement += ';'
+        
+        connection.c.execute(search_statement)
+        self.add_into_list_of_recipes(connection.c.fetchall())
 
     def clean_list(self):
         self.recipe_list_box.delete(0, self.recipe_list_box.size())

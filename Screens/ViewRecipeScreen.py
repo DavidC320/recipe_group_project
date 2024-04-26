@@ -50,33 +50,37 @@ class ViewRecipe(ChildFrame):
         self.ingredient_name_var = tk.StringVar()
 
         # Widgits
-        self.sub_title_frame = tk.Frame(self)
-        self.sub_title_frame.grid(row=6, column=0)
-        
-        tk.Label(self.sub_title_frame, text="Ingredient List").grid(row=0, column= 0, columnspan=4)
-
-        self.ingredient_name_entry = tk.Entry(self.sub_title_frame, textvariable=self.ingredient_name_var)
-        self.ingredient_name_entry.grid(row=1, column=1)
-
-        self.amount_name_entry = tk.Entry(self.sub_title_frame, textvariable=self.amount_name_var)
-        self.amount_name_entry.grid(row=1, column=2)
-        
-        self.create_ingredient_button = tk.Button(self.sub_title_frame, text="Add Ingredient", command=self.save_ingredient)
-        self.create_ingredient_button.grid(row=1, column=3)
-
-        self.ingredient_list_box = tk.Listbox(self, height=10)
-        self.ingredient_list_box.grid(row=7, column=0, columnspan=4)
-
         self.ingredient_control_frame = tk.Frame(self)
-        self.ingredient_control_frame.grid(row=8, column=0)
+        self.ingredient_control_frame.grid(row=6, column=0)
+        
+        tk.Label(self.ingredient_control_frame, text="Ingredient List").grid(row=0, column= 0, columnspan=4)
+        
+        tk.Label(self.ingredient_control_frame, text="Ingredient").grid(row=1, column=0)
+        tk.Label(self.ingredient_control_frame, text="Amount").grid(row=1, column=1)
+        
+        self.ingredient_name_entry = tk.Entry(self.ingredient_control_frame, textvariable=self.ingredient_name_var)
+        self.ingredient_name_entry.grid(row=2, column=0)
+        
+        self.amount_name_entry = tk.Entry(self.ingredient_control_frame, textvariable=self.amount_name_var)
+        self.amount_name_entry.grid(row=2, column=1)
+        
+        self.create_ingredient_button = tk.Button(self.ingredient_control_frame, text="Add Ingredient", command=self.save_ingredient)
+        self.create_ingredient_button.grid(row=2, column=2)
 
-        self.edit_ingredient_button = tk.Button(self.ingredient_control_frame, text="edit", command=self.edit_ingredient)
+        self.ingredient_list_box = tk.Listbox(self.ingredient_control_frame, height=10)
+        self.ingredient_list_box.grid(row=3, column=0, columnspan=4)
+
+        ## sub controls
+        self.sub_ingredient_control_frame = tk.Frame(self)
+        self.sub_ingredient_control_frame.grid(row=7, column=0)
+
+        self.edit_ingredient_button = tk.Button(self.sub_ingredient_control_frame, text="Edit", command=self.edit_ingredient)
         self.edit_ingredient_button.grid(row=0, column=0)
 
-        self.deselect_ingredient_button = tk.Button(self.ingredient_control_frame, text="deselect", command=self.deselect_ingredient)
+        self.deselect_ingredient_button = tk.Button(self.sub_ingredient_control_frame, text="Deselect", command=self.deselect_ingredient)
         self.deselect_ingredient_button.grid(row=0, column=1)
 
-        self.delete_ingredient_button = tk.Button(self.ingredient_control_frame, text="delete ingredient", command=self.delete_ingredient)
+        self.delete_ingredient_button = tk.Button(self.sub_ingredient_control_frame, text="Delete", command=self.delete_ingredient)
         self.delete_ingredient_button.grid(row=0, column=2)
         #################################################################################################
         ###################################### Ingredient controls ######################################
@@ -84,17 +88,17 @@ class ViewRecipe(ChildFrame):
 
         tk.Label(self, text="Description").grid(row=9, column= 0)
         self.description_text = tk.Text(self, width=40, height=10)
-        self.description_text.grid(row=9, column=0)
+        self.description_text.grid(row=10, column=0)
 
-        tk.Label(self, text="Instructions").grid(row=10, column= 0)
+        tk.Label(self, text="Instructions").grid(row=11, column= 0)
         self.instruction_text = tk.Text(self, width=40, height=10)
-        self.instruction_text.grid(row=11, column=0)
+        self.instruction_text.grid(row=12, column=0)
 
         ##########
         # Footer
         ##########
         self.control_frame = tk.Frame(self)
-        self.control_frame.grid(row=12)
+        self.control_frame.grid(row=13)
 
         button_text = ""
         if view_else_create:
@@ -141,6 +145,7 @@ class ViewRecipe(ChildFrame):
         self.recipe = Recipe()
         self.show_hidden.set(False)
         self.name_variable.set("")
+        self.category_dictionary = {}
 
         self.get_food_categories()
         
@@ -174,12 +179,15 @@ class ViewRecipe(ChildFrame):
         # food category
         connection.c.execute(f"""SELECT * FROM food_categories
                              WHERE food_category_id = {recipe.food_category}""")
-        food_category = FoodCategory().assign_by_array(connection.c.fetchone())
+        category  = connection.c.fetchone()
+        print(category)
+        food_category = FoodCategory().assign_by_array(category)
         self.food_category.set(food_category.name)
 
         # ingredients
         self.ingredient_name_var.set("")
         self.amount_name_var.set("")
+        print("\nid: ", recipe.id)
         connection.c.execute(f"""SELECT * FROM ingredients
                              WHERE recipe_id = {recipe.id}""")
         list_of_ingredients = connection.c.fetchall()
@@ -187,16 +195,6 @@ class ViewRecipe(ChildFrame):
             text = ingredient[2] + " " + ingredient[3]
             self.ingredient_list_box.insert(ingredient[0], text)
             self.ingredients.append(Ingredient().assign_by_array(ingredient))
-    
-    def update_ingredients(self):
-        '''
-        updates the ingredient
-        '''
-        self.deselect_ingredient()
-        self.ingredient_list_box.delete(0, 'end')
-        for ingredient in self.ingredients:
-                text = ingredient.name + " " + ingredient.amount
-                self.ingredient_list_box.insert('end', text)
     
 
     def save_check(self):
@@ -219,10 +217,14 @@ class ViewRecipe(ChildFrame):
         self.recipe.name = self.name_variable.get()
         self.recipe.hidden = self.show_hidden.get()
         food_category = self.category_dictionary.get(self.food_category.get())
+        print(self.category_dictionary, " ", self.food_category.get(), ' ', food_category, ' ', food_category.id)
         self.recipe.description = self.description_text.get('1.0', 'end')
         self.recipe.instructions = self.instruction_text.get('1.0', 'end')
         # print(self.save_check())
+
+        print(self.recipe.to_sqlite())
         create_full_recipe(connection.c, food_category, self.recipe, self.ingredients)
+        print(self.recipe.to_sqlite())
 
         for ingredient in self.ingredients_to_delete:
             connection.c.execute(f"""DELETE FROM ingredients
@@ -238,7 +240,7 @@ class ViewRecipe(ChildFrame):
         '''
         self.ingredient.name = self.ingredient_name_var.get()
         self.ingredient.amount = self.amount_name_var.get()
-        if self.ingredient.id == -1:
+        if self.ingredient.id == -1 and self.ingredient not in self.ingredients:
             self.ingredients.append(self.ingredient)
         self.update_ingredients()
 
@@ -268,3 +270,15 @@ class ViewRecipe(ChildFrame):
         if self.ingredient_list_box.curselection():
             self.ingredients_to_delete.append(self.ingredients.pop(self.ingredient_list_box.curselection()[0]))
             self.update_ingredients()
+    
+    
+    def update_ingredients(self):
+        '''
+        updates the ingredient
+        '''
+
+        self.deselect_ingredient()
+        self.ingredient_list_box.delete(0, 'end')
+        for ingredient in self.ingredients:
+                text = ingredient.name + " " + ingredient.amount
+                self.ingredient_list_box.insert('end', text)

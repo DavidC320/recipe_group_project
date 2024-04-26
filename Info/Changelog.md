@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.0.0
+
+* UserIndex & CreateUser screens are now deprecated and moved to the deprecated directory.
+* ViewRecipeScreen
+  * Added Labels for the ingredient, and amount entry boxes
+  * removed 'ingredient' from the text 'delete ingredient'
+  * the description label is now visable
+  * Added a check if the Ingredient object is already inside of the list in the add_ingredient function.
+* The Search function in the RecipeIndex screen now has an initial statement then adds more based of on if the user entered text into the search entry
+* on open, the RecipeIndex screen will reset the boolean of show hidden & search text to false & ''
+
 ## 3.3.1
 
 * The recipe app connect_to_file function now has a create mode that adds the food categories breakfast, lunch, and dinner.

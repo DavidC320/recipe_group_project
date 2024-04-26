@@ -60,7 +60,6 @@ class RecipeApp(FrameController):
     
 
 
-conn = SqliteConnecter("RecipeTest.db")
 root = RecipeApp(screenName= "Recipe Book")
 
 root.add_frame_direct("start", StartScreen(root.frame_holder, root))
@@ -70,14 +69,14 @@ root.add_frame_direct("recipe index", RecipeIndex(root.frame_holder, root))
 root.add_frame_direct("view recipe", ViewRecipe(root.frame_holder, root, True))
 root.add_frame_direct("create recipe", ViewRecipe(root.frame_holder, root, False))
 root.add_frame_direct("create admin", CreateAdmin(root.frame_holder, root))
-root.add_frame_direct("create user", CreateUser(root.frame_holder, root, False))
-root.add_frame_direct("Update user", CreateUser(root.frame_holder, root, False))
+# root.add_frame_direct("create user", CreateUser(root.frame_holder, root, False))
+# root.add_frame_direct("Update user", CreateUser(root.frame_holder, root, False))
 root.add_frame_direct("login", Login(root.frame_holder, root))
-root.add_frame_direct("user index", UserIndex(root.frame_holder, root))
+# root.add_frame_direct("user index", UserIndex(root.frame_holder, root))
 root.add_frame_direct("main menu", MainMenu(root.frame_holder, root))
 
 
-root.open_frame("login")
+root.open_frame("start")
 root.mainloop()
 
 """
