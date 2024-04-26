@@ -22,7 +22,7 @@ class RecipeApp(FrameController):
         self.sqlite_connector = None
         self.title("Recipe Book")
     
-    def connect_to_file(self, path:str):
+    def connect_to_file(self, path:str, create_mode = False):
         self.close_connection()
         self.sqlite_connector = SqliteConnecter(path)
 
@@ -32,10 +32,20 @@ class RecipeApp(FrameController):
             Ingredient.get_table_string(),
             User.get_table_string()
             ]
+        
+        categories = [
+            FoodCategory(-1, "Breakfast"), FoodCategory(-1, "Lunch"), FoodCategory(-1, "Dinner")
+            ]
 
         # Runs each of the commands in the tables.
         for table_command in tables:
             self.sqlite_connector.c.execute(table_command)
+        
+        # creates the food categories
+        if create_mode:
+            for category in categories:
+                self.sqlite_connector.c.execute(category.to_sqlite())
+        
         self.sqlite_connector.conn.commit()
     
     def close_connection(self):
@@ -59,9 +69,9 @@ root.add_frame_direct("load database", LoadDatabaseScreen(root.frame_holder, roo
 root.add_frame_direct("recipe index", RecipeIndex(root.frame_holder, root))
 root.add_frame_direct("view recipe", ViewRecipe(root.frame_holder, root, True))
 root.add_frame_direct("create recipe", ViewRecipe(root.frame_holder, root, False))
-root.add_frame_direct("create admin", CreateUser(root.frame_holder, root, True, True))
-root.add_frame_direct("create user", CreateUser(root.frame_holder, root, False, True))
-root.add_frame_direct("Update user", CreateUser(root.frame_holder, root, False, False))
+root.add_frame_direct("create admin", CreateAdmin(root.frame_holder, root))
+root.add_frame_direct("create user", CreateUser(root.frame_holder, root, False))
+root.add_frame_direct("Update user", CreateUser(root.frame_holder, root, False))
 root.add_frame_direct("login", Login(root.frame_holder, root))
 root.add_frame_direct("user index", UserIndex(root.frame_holder, root))
 root.add_frame_direct("main menu", MainMenu(root.frame_holder, root))

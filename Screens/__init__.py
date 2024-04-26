@@ -4,6 +4,7 @@ from .LoadDatabaseScreen import LoadDatabaseScreen
 from .RecipeIndexScreen import RecipeIndex
 from .ViewRecipeScreen import ViewRecipe
 from .CreateUserScreen import CreateUser
+from .CreateAdminScreen import CreateAdmin
 from .LoginScreen import Login
 from .UserIndexScreen import UserIndex
 from .MainMenuScreen import MainMenu

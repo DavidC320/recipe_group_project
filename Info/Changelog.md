@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.3.1
+
+* The recipe app connect_to_file function now has a create mode that adds the food categories breakfast, lunch, and dinner.
+* replaced the CreateUser Admin screen to a dedicated Admin screen.
+* Created the CreateAdmin screen.
+* The CreateUser screen
+  * Removed the Admin_mode that switched the text in the screen along
+* Go to users & sign out have been disabled
+* created but not implemented the save check function in hte ViewRecipe screen.
+
 ## 3.3.0
 
 * The view recipe now works

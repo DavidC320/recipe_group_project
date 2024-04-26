@@ -16,10 +16,10 @@ class MainMenu(ChildFrame):
         self.recipe_index_button = tk.Button(self, text="Go to recipes", command=lambda: controller.open_frame("recipe index"))
         self.recipe_index_button.pack()
 
-        self.user_index_button = tk.Button(self, text="Go to users", command=lambda: controller.open_frame("user index"))
+        self.user_index_button = tk.Button(self, text="Go to users", command=lambda: controller.open_frame("user index"), state=tk.DISABLED)
         self.user_index_button.pack()
 
-        self.sign_out_button = tk.Button(self, text="Sign out")
+        self.sign_out_button = tk.Button(self, text="Sign out", state=tk.DISABLED)
         self.sign_out_button.pack()
 
         self.back_button = tk.Button(self, text="Back", command=lambda: controller.open_frame("start"))

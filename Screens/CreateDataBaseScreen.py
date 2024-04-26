@@ -8,6 +8,9 @@ from tkinter_objects.ControllerMainObject import *
 from tkinter import filedialog as fd 
 
 class CreateDatabaseScreen(ChildFrame):
+    '''
+    Screen used to create a database for the user
+    '''
     def __init__(self, master, controller, **kwargs) -> None:
         super().__init__(master, controller, **kwargs)
         tk.Label(self, text="Create Database").pack()
@@ -30,17 +33,23 @@ class CreateDatabaseScreen(ChildFrame):
         self.filepath_label.config(text= "//filepath/?")
     
     def create_database(self):
+        '''
+        Creates the sqlite database with the path
+        '''
         if self.file_path not in ["", "//filepath/?"]:
-            self.controller.connect_to_file(self.file_path)
+            self.controller.connect_to_file(self.file_path, True)
             self.controller.open_frame("main menu")
         else:
             self.filepath_label.config(text= "Select a file path")
 
     def select_destination(self):
+        '''
+        Asks the user to select where they want to save the file.
+        '''
         data = fd.asksaveasfilename(title="Select where you want to save the file.", 
                                     defaultextension="*.db",
                                     filetypes= [("Database File", "*.db")]
                                     )
-        if data != "":
+        if data != "":  # checks if the user didn't just close the window
             self.file_path = data
             self.filepath_label.config(text= data)

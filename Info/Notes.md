@@ -1,5 +1,12 @@
 # Notes
 
+## Todo
+
+* fix the food category issue
+* fix capitalization
+* make the show hidden open search
+* fix the search button when the hidden button is pressed
+
 ## issue - can't get the recipe index
 
 Due to the insert of the listbox, I will need to create a dictionary or list to convert the indexes into the correct index.

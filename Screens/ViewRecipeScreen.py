@@ -96,11 +96,12 @@ class ViewRecipe(ChildFrame):
         self.control_frame = tk.Frame(self)
         self.control_frame.grid(row=12)
 
+        button_text = ""
         if view_else_create:
-            self.update_button = tk.Button(self.control_frame, text="Update", command= self.save_recipe)
-            self.update_button.grid(row= 0, column=0)
+            button_text= "Update"
         else:
-            self.update_button = tk.Button(self.control_frame, text="Create", command= self.save_recipe)
+            button_text= "Create"
+        self.update_button = tk.Button(self.control_frame, text=button_text, command= self.save_recipe)
         self.update_button.grid(row= 0, column=0)
 
         self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("recipe index"))
@@ -188,14 +189,31 @@ class ViewRecipe(ChildFrame):
             self.ingredients.append(Ingredient().assign_by_array(ingredient))
     
     def update_ingredients(self):
+        '''
+        updates the ingredient
+        '''
         self.deselect_ingredient()
         self.ingredient_list_box.delete(0, 'end')
-        print(self.ingredients)
         for ingredient in self.ingredients:
                 text = ingredient.name + " " + ingredient.amount
                 self.ingredient_list_box.insert('end', text)
-        
+    
+
+    def save_check(self):
+        if len(self.name_variable.get().strip()):
+            return "Please enter a name."
+        elif len(self.food_category.get().strip()):
+            return "Food category not selected."
+        elif len(self.description_text.get('1.0', 'end').strip()):
+            return "please enter a description."
+        elif len(self.instruction_text.get('1.0', 'end').strip()):
+            return "please enter a instruction."
+
+
     def save_recipe(self):
+        '''
+        Get's the user entered data and inserts it into the recipe
+        '''
         connection : SqliteConnecter = self.controller.get_connector()
 
         self.recipe.name = self.name_variable.get()
@@ -203,6 +221,7 @@ class ViewRecipe(ChildFrame):
         food_category = self.category_dictionary.get(self.food_category.get())
         self.recipe.description = self.description_text.get('1.0', 'end')
         self.recipe.instructions = self.instruction_text.get('1.0', 'end')
+        # print(self.save_check())
         create_full_recipe(connection.c, food_category, self.recipe, self.ingredients)
 
         for ingredient in self.ingredients_to_delete:
@@ -210,14 +229,15 @@ class ViewRecipe(ChildFrame):
                                  WHERE ingredient_id = {ingredient.id}""")
         connection.conn.commit()
         self.controller.open_frame("recipe index")
-        print("done")
 
     
     ### Ingredient controls
     def save_ingredient(self):
+        '''
+        saves the ingredient.
+        '''
         self.ingredient.name = self.ingredient_name_var.get()
         self.ingredient.amount = self.amount_name_var.get()
-        print(self.ingredient.id)
         if self.ingredient.id == -1:
             self.ingredients.append(self.ingredient)
         self.update_ingredients()
@@ -242,6 +262,9 @@ class ViewRecipe(ChildFrame):
         self.ingredient_list_box.select_clear(0, 'end')
 
     def delete_ingredient(self):
+        '''
+        Deletes the ingredient from the list
+        '''
         if self.ingredient_list_box.curselection():
             self.ingredients_to_delete.append(self.ingredients.pop(self.ingredient_list_box.curselection()[0]))
             self.update_ingredients()
