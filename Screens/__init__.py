@@ -1,6 +1,6 @@
 from .StartScreen import StartScreen
-from .CreateDataBaseScreen import CreateDatabaseScreen
-from .LoadDatabaseScreen import LoadDatabaseScreen
+from .CreateDataBaseScreen import InitDatabaseScreen
+# from .LoadDatabaseScreen import LoadDatabaseScreen  # deprecated
 from .RecipeIndexScreen import RecipeIndex
 from .ViewRecipeScreen import ViewRecipe
 # from .CreateUserScreen import CreateUser  # deprecated

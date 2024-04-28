@@ -45,6 +45,8 @@ class RecipeIndex(ChildFrame):
         self.search_query.set('')
     
     def on_open(self):
+        self.create_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+
         connection : SqliteConnecter = self.controller.get_connector()
         connection.c.execute("""
                              SELECT * FROM recipes

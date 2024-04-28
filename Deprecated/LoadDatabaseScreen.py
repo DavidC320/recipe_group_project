@@ -1,3 +1,7 @@
+'''
+Deprecated
+'''
+
 import tkinter as tk
 import sys
 import os

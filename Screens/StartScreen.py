@@ -15,3 +15,6 @@ class StartScreen(ChildFrame):
         self.load_database = tk.Button(self, text="Load Database", command=lambda: controller.open_frame("load database"))
         self.load_database.pack()
 
+    def on_open(self):
+        self.controller.logged_in = False
+        self.controller.byte_key = b''

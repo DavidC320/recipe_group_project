@@ -135,7 +135,18 @@ class ViewRecipe(ChildFrame):
         
         self.category_combo_box["values"] = list_of_category_names
         self.category_dictionary = dictionary_of_categories
-        self.food_category.set("")
+        self.food_category.set(list_of_category_names[0])
+    
+    def on_open(self):
+        self.show_hidden_check_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.name_entry.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.category_combo_box.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.ingredient_name_entry.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.amount_name_entry.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.edit_ingredient_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.deselect_ingredient_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.delete_ingredient_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.update_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
 
 
     def set_new(self):
@@ -180,14 +191,12 @@ class ViewRecipe(ChildFrame):
         connection.c.execute(f"""SELECT * FROM food_categories
                              WHERE food_category_id = {recipe.food_category}""")
         category  = connection.c.fetchone()
-        print(category)
         food_category = FoodCategory().assign_by_array(category)
         self.food_category.set(food_category.name)
 
         # ingredients
         self.ingredient_name_var.set("")
         self.amount_name_var.set("")
-        print("\nid: ", recipe.id)
         connection.c.execute(f"""SELECT * FROM ingredients
                              WHERE recipe_id = {recipe.id}""")
         list_of_ingredients = connection.c.fetchall()
@@ -222,9 +231,7 @@ class ViewRecipe(ChildFrame):
         self.recipe.instructions = self.instruction_text.get('1.0', 'end')
         # print(self.save_check())
 
-        print(self.recipe.to_sqlite())
         create_full_recipe(connection.c, food_category, self.recipe, self.ingredients)
-        print(self.recipe.to_sqlite())
 
         for ingredient in self.ingredients_to_delete:
             connection.c.execute(f"""DELETE FROM ingredients
@@ -244,6 +251,7 @@ class ViewRecipe(ChildFrame):
             self.ingredients.append(self.ingredient)
         self.update_ingredients()
 
+
     def edit_ingredient(self):
         '''
         Gets the selected ingredient and sets it to be editable
@@ -254,6 +262,7 @@ class ViewRecipe(ChildFrame):
             self.amount_name_var.set(selected_ingredient.amount)
             self.ingredient = selected_ingredient
 
+
     def deselect_ingredient(self):
         '''
         deselects the ingredient and deselecting the ingredient in the listbox
@@ -262,6 +271,7 @@ class ViewRecipe(ChildFrame):
         self.ingredient_name_var.set("")
         self.amount_name_var.set("")
         self.ingredient_list_box.select_clear(0, 'end')
+
 
     def delete_ingredient(self):
         '''

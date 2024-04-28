@@ -16,11 +16,22 @@ class MainMenu(ChildFrame):
         self.recipe_index_button = tk.Button(self, text="Go to recipes", command=lambda: controller.open_frame("recipe index"))
         self.recipe_index_button.pack()
 
-        self.user_index_button = tk.Button(self, text="Go to users", command=lambda: controller.open_frame("user index"), state=tk.DISABLED)
-        self.user_index_button.pack()
-
-        self.sign_out_button = tk.Button(self, text="Sign out", state=tk.DISABLED)
-        self.sign_out_button.pack()
+        self.sign_button = tk.Button(self, text="Login")
+        self.sign_button.pack()
 
         self.back_button = tk.Button(self, text="Back", command=lambda: controller.open_frame("start"))
         self.back_button.pack()
+
+
+    def on_open(self):
+        if self.controller.logged_in:
+            self.sign_button.config(command= self.sign_out, text= "Sign Out")
+        else:
+            self.sign_button.config(command= self.login, text= "Login")
+    
+    def login(self):
+        self.controller.open_frame("login")
+
+    def sign_out(self):
+        self.controller.logged_in = False
+        self.on_open()
