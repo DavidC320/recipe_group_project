@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1
+
+* You can now delete recipes which deletes the ingredients a part of it.
+
 ## 5.0
 
 * Features

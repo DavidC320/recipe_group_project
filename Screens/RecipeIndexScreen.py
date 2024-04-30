@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox as mb
 import sys
 import os
 SCRIPT_DIR = os.path.dirname(os.path.abspath("tkinter_objects\\__init__.py"))
@@ -33,19 +34,43 @@ class RecipeIndex(ChildFrame):
         self.create_button = tk.Button(self.control_frame, text="Create", command=self.create_recipe)
         self.create_button.grid(row=0, column=0)
 
+        self.deselect_button = tk.Button(self.control_frame, text="Deselect", command=lambda: self.recipe_list_box.select_clear(0, 'end'))
+        self.deselect_button.grid(row=0, column=1)
+
+        self.delete_button= tk.Button(self.control_frame, text="Delete", command=self.delete_recipe)
+        self.delete_button.grid(row=0, column=2)
+
         self.view_button = tk.Button(self.control_frame, text="View", command=self.view_recipe)
-        self.view_button.grid(row=0, column=1)
+        self.view_button.grid(row=1, column=0)
 
         self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("main menu"))
-        self.back_button.grid(row=0, column=2)
+        self.back_button.grid(row=1, column=1)
     
     def on_close(self):
         self.clean_list()
         self.show_hidden.set(False)
         self.search_query.set('')
     
+    def delete_recipe(self):
+        if self.recipe_list_box.curselection():
+            choice = mb.askyesno("Delete Recipe", "Are you sure you want to delete the recipe, the recipe can not be recovered after deletion.", icon = mb.WARNING)
+            if choice:
+                connection : SqliteConnecter = self.controller.get_connector()
+                recipe = self.list_of_recipes.pop(self.recipe_list_box.curselection()[0])
+                connection.c.execute(f"""DELETE FROM recipes
+                                     WHERE recipe_id = {recipe.id};""")
+                connection.c.execute(f"""DELETE FROM ingredients
+                                     WHERE recipe_id = {recipe.id};""")
+                connection.conn.commit()
+                self.clean_list()
+
+
+
+    
     def on_open(self):
         self.create_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.delete_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
+        self.deselect_button.config(state= tk.NORMAL if self.controller.logged_in else tk.DISABLED)
 
         connection : SqliteConnecter = self.controller.get_connector()
         connection.c.execute("""
@@ -89,3 +114,12 @@ class RecipeIndex(ChildFrame):
     def clean_list(self):
         self.recipe_list_box.delete(0, self.recipe_list_box.size())
         self.list_of_recipes = []
+        self.recipe_list_box.select_clear(0, 'end')
+
+
+"""
+References:
+
+https://docs.python.org/3/library/tkinter.messagebox.html
+How to use message boxes
+"""
