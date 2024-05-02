@@ -94,11 +94,14 @@ class ViewRecipe(ChildFrame):
         self.instruction_text = tk.Text(self, width=40, height=10)
         self.instruction_text.grid(row=12, column=0)
 
+        self.error_label = tk.Label(self, text="")
+        self.error_label.grid(row=13, column=0)
+
         ##########
         # Footer
         ##########
         self.control_frame = tk.Frame(self)
-        self.control_frame.grid(row=13)
+        self.control_frame.grid(row=14)
 
         button_text = ""
         if view_else_create:
@@ -171,6 +174,7 @@ class ViewRecipe(ChildFrame):
         self.instruction_text.delete(0.0, 'end')
 
         self.ingredient_list_box.select_clear(0, 'end')
+        self.error_label.config(text="")
 
 
     def set_recipe(self, recipe:Recipe):
@@ -207,13 +211,13 @@ class ViewRecipe(ChildFrame):
     
 
     def save_check(self):
-        if len(self.name_variable.get().strip()):
+        if len(self.name_variable.get().strip()) <= 0:
             return "Please enter a name."
-        elif len(self.food_category.get().strip()):
+        elif len(self.food_category.get().strip()) <= 0:
             return "Food category not selected."
-        elif len(self.description_text.get('1.0', 'end').strip()):
+        elif len(self.description_text.get('1.0', 'end').strip()) <= 0:
             return "please enter a description."
-        elif len(self.instruction_text.get('1.0', 'end').strip()):
+        elif len(self.instruction_text.get('1.0', 'end').strip()) <= 0:
             return "please enter a instruction."
 
 
@@ -222,6 +226,11 @@ class ViewRecipe(ChildFrame):
         Get's the user entered data and inserts it into the recipe
         '''
         connection : SqliteConnecter = self.controller.get_connector()
+
+        error_string = self.save_check()
+        if error_string:
+            self.error_label.config(text=error_string)
+            return
 
         self.recipe.name = self.name_variable.get()
         self.recipe.hidden = self.show_hidden.get()

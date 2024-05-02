@@ -9,6 +9,16 @@ BB - Cause of Error
 ERROR - error type  
 \## - id
 
+## LSWSLOGIC04 - Login screen bringing the user to the start screen instead of the main menu
+
+## Cause
+
+The back button in the login screen brings the user back to the start instead of the main menu making it so that the user has to connect into the database.
+
+## Solution
+
+Changed the open frame in the login screen to 'main menu' instead of 'start'.
+
 ## VRAILOGIC03 - Editing an Ingredient will Sometimes add a Duplicate
 
 ### Cause

@@ -36,7 +36,7 @@ class Login(ChildFrame):
         self.create_button = tk.Button(self.control_frame, text="Login", command=self.login)
         self.create_button.grid(row=0, column=0)
 
-        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("start"))
+        self.back_button = tk.Button(self.control_frame, text="Back", command=lambda: controller.open_frame("main menu"))
         self.back_button.grid(row=0, column=1)
 
 

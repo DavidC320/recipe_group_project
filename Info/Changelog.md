@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.2
+
+* The login screen now returns to the main menu instead of the start screen.
+* There are now validation checks in the view recipe screen.
+
 ## 5.1
 
 * You can now delete recipes which deletes the ingredients a part of it.
