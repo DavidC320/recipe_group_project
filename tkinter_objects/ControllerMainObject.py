@@ -12,9 +12,11 @@ class FrameController(tk.Tk):
         super().__init__(**kwargs)
         self.dictionary_of_frames = {}
         self.current_frame = None
-        self.basic_frame = tk.Frame(self)
+
+        self.basic_frame = tk.Frame(self)  # Holds widgets that persist through all screens
         self.basic_frame.pack()
-        self.frame_holder = tk.Frame(self)
+
+        self.frame_holder = tk.Frame(self)  # holds all of the child frames
         self.frame_holder.pack()
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.3
+
+* New documentation
+
 ## 5.2
 
 * The login screen now returns to the main menu instead of the start screen.

@@ -17,6 +17,9 @@ from cryptography.fernet import Fernet
 from Screens import *
 
 class RecipeApp(FrameController):
+    '''
+    This is the main controller for the application which stores all the screens and data that feeds the screens.
+    '''
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.sqlite_connector = None
